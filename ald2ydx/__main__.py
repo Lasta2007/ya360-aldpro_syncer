@@ -1,7 +1,7 @@
 """Точка входа модуля синхронизации ALD Pro -> Яндекс 360.
 
 Запуск:
-    python -m ald2ydx --config /etc/ald2ydx/config.yaml [--dry-run] [--mode full|incremental]
+    python -m ald2ydx --config /opt/ya360-aldpro_syncer/config/config.yaml [--dry-run] [--mode full|incremental]
 
 Без аргументов конфигурация ищется в $A2Y_CONFIG, ./config/config.yaml.
 Переменные окружения с префиксом A2Y_ переопределяют значения из файла.
