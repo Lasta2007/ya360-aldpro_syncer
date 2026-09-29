@@ -16,15 +16,24 @@ python -m ald2ydx                            # рабочая синхрониз
 Коды возврата: 0 — успех, 1 — ошибки при синхронизации, 2 — ошибка конфигурации.
 
 ## Запуск на сервере с Astra Linux
-Полная инструкция: [docs/DEPLOY_AstraLinux.md](docs/DEPLOY_AstraLinux.md).
+**Весь проект размещается в одном каталоге `/opt/ya360-aldpro_syncer`**: код, `venv/`,
+конфиг `config/config.yaml`, секреты `secret.env` (chmod 600), состояние `state/`, логи `logs/`.
+Никаких файлов вне этого дерева. Полная инструкция: [docs/DEPLOY_AstraLinux.md](docs/DEPLOY_AstraLinux.md).
 Кратко:
 ```bash
-# код -> /opt/ya360-aldpro_syncer, конфиг -> /etc/ald2ydx/config.yaml, секреты -> /etc/ald2ydx/secret.env (chmod 600)
-cd /opt/ya360-aldpro_syncer && sudo -u ald2ydx ./venv/bin/python -m ald2ydx --dry-run --mode full
+sudo useradd -r -s /usr/sbin/nologin ald2ydx
+# скопировать репозиторий в /opt/ya360-aldpro_syncer, затем:
+sudo python3 -m venv /opt/ya360-aldpro_syncer/venv
+sudo chown -R ald2ydx:ald2ydx /opt/ya360-aldpro_syncer/venv /opt/ya360-aldpro_syncer/state /opt/ya360-aldpro_syncer/logs
+sudo /opt/ya360-aldpro_syncer/venv/bin/pip install -r /opt/ya360-aldpro_syncer/requirements.txt
+# конфиг: config/config.yaml, секреты: secret.env (см. docs)
+sudo -u ald2ydx bash -c 'cd /opt/ya360-aldpro_syncer && set -a && . ./secret.env && set +a && \
+    ./venv/bin/python -m ald2ydx --config config/config.yaml --dry-run --mode full'
 sudo cp deploy/systemd/ald2ydx.service deploy/systemd/ald2ydx.timer /etc/systemd/system/
 sudo systemctl daemon-reload && sudo systemctl enable --now ald2ydx.timer
-systemctl status ald2ydx.service && journalctl -u ald2ydx.service -f
+journalctl -u ald2ydx.service -f    # и logs/sync.log внутри дерева проекта
 ```
+Деинсталляция — удаление юнитов, пользователя и самого каталога `/opt/ya360-aldpro_syncer`.
 
 ## Структура
 - `ald2ydx/settings.py` — конфигурация (YAML + env `A2Y_*`, pydantic-валидация)

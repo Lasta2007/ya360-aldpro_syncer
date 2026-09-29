@@ -1,5 +1,5 @@
 # Пример конфигурации модуля синхронизации ALD Pro -> Яндекс 360.
-# Скопируйте в /etc/ald2ydx/config.yaml (или ./config/config.yaml) и отредактируйте.
+# Скопируйте в /opt/ya360-aldpro_syncer/config/config.yaml и отредактируйте.
 # Секреты лучше задавать переменными окружения с префиксом A2Y_ (см. systemd-юнит).
 
 ald_pro:
@@ -25,7 +25,7 @@ yandex360:
 sync:
   base_dn: "OU=Персонал,DC=example,DC=ru"   # корень обхода дерева ALD Pro
   root_department_id: 1                      # id подразделения-родителя в Яндекс 360
-  state_path: "/var/lib/ald2ydx/sync_state.json"
+  state_path: "/opt/ya360-aldpro_syncer/state/sync_state.json"
   mode: incremental                          # full | incremental
   dry_run: false
   delete_departments: false                  # разрешить DepartmentService_Delete
@@ -33,4 +33,4 @@ sync:
 
 logging:
   level: INFO                                # DEBUG | INFO | WARNING | ERROR
-  file: "/var/log/ald2ydx/sync.log"          # пусто/отсутствует -> stdout
+  file: "/opt/ya360-aldpro_syncer/logs/sync.log"          # пусто/отсутствует -> stdout
