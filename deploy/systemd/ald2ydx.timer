@@ -1,0 +1,11 @@
+[Unit]
+Description=Таймер синхронизации ALD Pro -> Яндекс 360
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1h
+AccuracySec=1min
+Unit=ald2ydx.service
+
+[Install]
+WantedBy=timers.target

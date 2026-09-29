@@ -1,0 +1,23 @@
+[Unit]
+Description=Синхронизация каталога ALD Pro -> Яндекс 360
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ald2ydx
+Group=ald2ydx
+WorkingDirectory=/opt/ald2ydx
+Environment=A2Y_CONFIG=/etc/ald2ydx/config.yaml
+# Секреты — в файле с правами 600:
+EnvironmentFile=-/etc/ald2ydx/secret.env
+ExecStart=/opt/ald2ydx/venv/bin/python -m ald2ydx --config /etc/ald2ydx/config.yaml
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/ald2ydx /var/log/ald2ydx
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
