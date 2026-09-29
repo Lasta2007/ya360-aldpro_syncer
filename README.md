@@ -19,7 +19,8 @@ python -m ald2ydx                            # рабочая синхрониз
 Полная инструкция: [docs/DEPLOY_AstraLinux.md](docs/DEPLOY_AstraLinux.md).
 Кратко:
 ```bash
-# код -> /opt/ald2ydx, конфиг -> /etc/ald2ydx/config.yaml, секреты -> /etc/ald2ydx/secret.env (chmod 600)
+# код -> /opt/ya360-aldpro_syncer, конфиг -> /etc/ald2ydx/config.yaml, секреты -> /etc/ald2ydx/secret.env (chmod 600)
+cd /opt/ya360-aldpro_syncer && sudo -u ald2ydx ./venv/bin/python -m ald2ydx --dry-run --mode full
 sudo cp deploy/systemd/ald2ydx.service deploy/systemd/ald2ydx.timer /etc/systemd/system/
 sudo systemctl daemon-reload && sudo systemctl enable --now ald2ydx.timer
 systemctl status ald2ydx.service && journalctl -u ald2ydx.service -f
